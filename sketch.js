@@ -50,10 +50,10 @@ function getlocation() {
       lon = position.coords.longitude;
       // søge vejr data
       api_url =
-"https://api.open-meteo.com/v1/forecast?latitude="+lat+"&longitude="+lon+"&hourly=temperature_2m,relativehumidity_2m,apparent_temperature,rain,showers,pressure_msl,cloudcover,visibility,windspeed_10m,winddirection_10m,windgusts_10m,uv_index&daily=temperature_2m_max,temperature_2m_min,sunrise,sunset,uv_index_max,uv_index_clear_sky_max,rain_sum,windspeed_10m_max,windgusts_10m_max&windspeed_unit=ms&timezone=auto";
+      "https://api.open-meteo.com/v1/forecast?latitude="+lat+"&longitude="+lon+"&hourly=temperature_2m,relativehumidity_2m,apparent_temperature,rain,showers,pressure_msl,cloudcover,visibility,windspeed_10m,winddirection_10m,windgusts_10m,uv_index&daily=temperature_2m_max,temperature_2m_min,sunrise,sunset,uv_index_max,uv_index_clear_sky_max,rain_sum,windspeed_10m_max,windgusts_10m_max&windspeed_unit=ms&timezone=auto";
       fetch(api_url)
         .then((response) => response.json())
-      //opdatere data
+        //opdatere data
         .then((data) => {
           tempNu = data.hourly.temperature_2m[hour()];
           følesNu = data.hourly.apparent_temperature[hour()];
@@ -87,7 +87,7 @@ function søg() {
   //tage søg input og find lat og lon
   return new Promise((resolve, reject) => {
       let lokationApi =
-"https://api.geoapify.com/v1/geocode/search?city="+by+"&country="+land+"&format=json&apiKey=f9fe0bda61e74dba829afb382d22d33a";
+      "https://api.geoapify.com/v1/geocode/search?city="+by+"&country="+land+"&format=json&apiKey=f9fe0bda61e74dba829afb382d22d33a";
       fetch(lokationApi)
         .then((response) => response.json())
         .then((geocodeResponse) => {
@@ -108,10 +108,10 @@ function søg() {
 function søgVejr() {
   //finder ny data med opgivne by
   api_url =
-"https://api.open-meteo.com/v1/forecast?latitude="+søgLat+"&longitude="+søgLon+"&hourly=temperature_2m,relativehumidity_2m,apparent_temperature,rain,showers,pressure_msl,cloudcover,visibility,windspeed_10m,winddirection_10m,windgusts_10m,uv_index&daily=temperature_2m_max,temperature_2m_min,sunrise,sunset,uv_index_max,uv_index_clear_sky_max,rain_sum,windspeed_10m_max,windgusts_10m_max&windspeed_unit=ms&timezone=auto";
+  "https://api.open-meteo.com/v1/forecast?latitude="+søgLat+"&longitude="+søgLon+"&hourly=temperature_2m,relativehumidity_2m,apparent_temperature,rain,showers,pressure_msl,cloudcover,visibility,windspeed_10m,winddirection_10m,windgusts_10m,uv_index&daily=temperature_2m_max,temperature_2m_min,sunrise,sunset,uv_index_max,uv_index_clear_sky_max,rain_sum,windspeed_10m_max,windgusts_10m_max&windspeed_unit=ms&timezone=auto";
   fetch(api_url)
     .then((response) => response.json())
-  //Opdatere data
+    //Opdatere data
     .then((data) => {
       tempNu = data.hourly.temperature_2m[hour()];
       følesNu = data.hourly.apparent_temperature[hour()];
@@ -205,14 +205,14 @@ function tegn() {
     if (UV > 7){
       continue;
     }
-  point(boksMellemrumHor*2+boksTyk+30+(boksTyk-50)/24*i,idagBoksHøj+boksMellemrumVer+(boksLang-10)-50-UV*20);
-    }
-for (let i=0; i<24;i++){
-  if (i%3==0) {
+    point(boksMellemrumHor*2+boksTyk+30+(boksTyk-50)/24*i,idagBoksHøj+boksMellemrumVer+(boksLang-10)-50-UV*20);
+  }
+  for (let i=0; i<24;i++){
+    if (i%3==0) {
       textSize(10);
-    text(timer[i],boksMellemrumHor*2+boksTyk+30+(boksTyk-50)/24*i,idagBoksHøj+boksMellemrumVer+(boksLang-10)-30);
-}
-}
+      text(timer[i],boksMellemrumHor*2+boksTyk+30+(boksTyk-50)/24*i,idagBoksHøj+boksMellemrumVer+(boksLang-10)-30);
+    }
+  }
   for (let i = 0; i<7; i++){
     strokeWeight(1);
     let linex = boksMellemrumHor*2+boksTyk+30;
