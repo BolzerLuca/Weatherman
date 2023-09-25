@@ -11,6 +11,8 @@ function preload() {
   skySol = loadImage('SkyetSol.png');
   skySolRegn = loadImage('SkyetSolRegn.png');
   skyRegn = loadImage('Skyregn.png');
+  varmepile = loadImage('varmepile.png');
+  windsock = loadImage('windsock.png');
 }
 function setup() {
   //laver canvas og top bar
@@ -37,7 +39,6 @@ function setup() {
   søgKnap.mousePressed(søg);
 
   getlocation();
-
 }
 
 function updateBy() {
@@ -177,8 +178,6 @@ function tegn() {
   //tryk
   rect(boksMellemrumHor*2+boksTyk,idagBoksHøj+boksMellemrumVer*2+boksLang,boksTyk,boksKort,10);
   
-  
-  
   //blå navneboks til kasserne
   fill(79, 147, 226);
   //temperatur
@@ -210,6 +209,8 @@ function tegn() {
   textSize(12);
   textAlign(CENTER);
   text('UV time for time',boksTyk*1.5+boksMellemrumHor*2,idagBoksHøj+boksMellemrumVer+(boksLang-10)/2+12 );
+  let UVx = boksMellemrumHor*2+boksTyk+30+(boksTyk-50);
+  let UVy = idagBoksHøj+boksMellemrumVer+(boksLang-10)-50;
   for (let i = 0; i < 24; i++) {
     strokeWeight(4);
     let UV = Number(uvTime[i]);
@@ -217,6 +218,10 @@ function tegn() {
       continue;
     }
     point(boksMellemrumHor*2+boksTyk+30+(boksTyk-50)/24*i,idagBoksHøj+boksMellemrumVer+(boksLang-10)-50-UV*20);
+    strokeWeight(0.5);
+    line(UVx, UVy, boksMellemrumHor*2+boksTyk+30+(boksTyk-50)/24*i, idagBoksHøj+boksMellemrumVer+(boksLang-10)-50-UV*20)
+    UVx = boksMellemrumHor*2+boksTyk+30+(boksTyk-50)/24*i;
+    UVy = idagBoksHøj+boksMellemrumVer+(boksLang-10)-50-UV*20;
   }
   for (let i=0; i<24;i++){
     if (i%3==0) {
@@ -289,4 +294,79 @@ function tegn() {
   }
   pop();
 
+  // Uv mand
+  push();
+  strokeWeight(2);
+  stroke(0);
+  // Sætter (0, 0) i midten af "i dag" boksen
+  translate(width/2-50,idagBoksHøj/2+20);
+  ellipseMode(CENTER);
+  // Ændrer farven på manden afhængig af UV-indekset
+  let a = map(uvTime[hour()], 0, 10, 0, 255);
+  fill(255, 0, 0, a);
+  ellipse(0, 50, 100);
+  fill(255);
+  beginShape();
+  vertex(-75, 40);
+  vertex(75, 40);
+  vertex(50, 0);
+  vertex(-50, 0);
+  vertex(-75, 40);
+  endShape();
+  rectMode(CENTER);
+  rect(0, -15, 100, 30);
+  // sveddråbe
+  push();
+  translate(-50, -25);
+  noStroke();
+  let r = map(tempNu, 5, 30, 0, 255);
+  fill(r, 100-r, 255-r);
+  ellipse(0, 0, 14);
+  beginShape();
+  vertex(7.5, 0);
+  vertex(-7.5, 0);
+  vertex(0, -25);
+  vertex(7.5, 0);
+  endShape();
+  pop();
+  // sol
+  push();
+  translate(175, -75);
+  noStroke();
+  fill(255, 255, 0);
+  ellipse(0, 0, 100);
+  textAlign(CENTER);
+  strokeWeight(1);
+  stroke(0);
+  fill(0);
+  text('UV', 0, 0);
+  text(uvTime[hour()], 0, 10);
+  // pile
+  rotate(PI*0.82);
+  image(varmepile, 60, -40, 75, 75);
+  pop();
+  pop();
+
+  // vindretning
+  push();
+  translate(boksTyk*2.5 + boksMellemrumHor*3, idagBoksHøj + boksMellemrumVer*2 + boksKort*1.5 + 20);
+  // kompass
+  textAlign(CENTER);
+  strokeWeight(3);
+  textSize(20);
+  text("N", 0, -110);
+  text("Ø", 110, 5);
+  text("S", 0, 110);
+  text("V", -110, 5);
+  // vindhastighed m/s
+  strokeWeight(5);
+  textSize(25);
+  text(vind[hour()] + " m/s", -boksTyk/4, -100);
+  // vindsok
+  imageMode(CENTER);
+  angleMode(DEGREES);
+  rotate(vindRetning[hour()] + 90);
+  image(windsock, 45, 0, 90, 45);
+  ellipse(0, 0, 10);
+  pop();
 }
