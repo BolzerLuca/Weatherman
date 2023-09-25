@@ -1,10 +1,16 @@
 let api_url, lat, lon, søgLat, søgLon, by, land, inpBy, inpLand = "";
-let søgKnap, tempNu, følesNu,logo,termoIkon;
-let tempMax, timeRegn, regnSum, byger, tryk, skydække, sigtbarhed, vind, vindRetning, vindStød, solop, solned, uvDag, uvTime = [];
+let søgKnap, tempNu, følesNu,logo,termoIkon,dråbeIkon,solrig,sky,skySol,skySolRegn,skyRegn;
+let tempMax,timeTemp, timeRegn, regnSum, byger, tryk, skydække, sigtbarhed, vind, vindRetning, vindStød, solop, solned, uvDag, uvTime = [];
 let timer = ['00','01','02','03','04','05','06','07','08','09','10','11','12','13','14','15','16','17','18','19','20','21','22','23'];
 function preload() {
   logo = loadImage('Skoldede skaller.png');
   termoIkon = loadImage('termometer ikon.png');
+  dråbeIkon = loadImage('DråbeIkon.png');
+  solrig = loadImage('Solrig.png');
+  sky = loadImage('Sky.png');
+  skySol = loadImage('SkyetSol.png');
+  skySolRegn = loadImage('SkyetSolRegn.png');
+  skyRegn = loadImage('Skyregn.png');
   varmepile = loadImage('varmepile.png');
   windsock = loadImage('windsock.png');
 }
@@ -56,10 +62,12 @@ function getlocation() {
         .then((response) => response.json())
         //opdatere data
         .then((data) => {
+          console.log(data);
           tempNu = data.hourly.temperature_2m[hour()];
           følesNu = data.hourly.apparent_temperature[hour()];
           tempMax = data.daily.temperature_2m_max;
           timeRegn = data.hourly.rain;
+          timeTemp = data.hourly.temperature_2m;
           regnSum = data.daily.rain_sum;
           byger = data.hourly.showers;
           tryk = data.hourly.pressure_msl;
@@ -71,7 +79,7 @@ function getlocation() {
           solop = data.daily.sunrise;
           solned = data.daily.sunset;
           uvDag = data.daily.uv_index_max;
-          uvTime = data.hourly.uv_index;
+          uvTime = data.hourly.uv_index;;
           tegn();
           resolve(data);
         })
@@ -81,6 +89,7 @@ function getlocation() {
         });
     });
   });
+  
 }
 
 
@@ -141,6 +150,8 @@ function tegn() {
   let boksLang = 417;
   let boksKort = 313;
   let idagBoksHøj = 500;
+  let idagBoksMel = width/30;
+  let idagBoksOpdel = (width-2*width/30)/3;
   strokeWeight(2);
   
   //tegner baggrunds kasse for frem ad
@@ -237,8 +248,51 @@ function tegn() {
   
   for (let i = 0; i < 2; i++) {
     fill(0);
-    line(width/30+((width-2*width/30)/3)+i*((width-2*width/30)/3),130,width/30+((width-2*width/30)/3)+i*(width-2*width/30)/3,447);
+    line(idagBoksMel+(idagBoksOpdel)+i*(idagBoksOpdel),130,width/30+((width-2*width/30)/3)+i*(width-2*width/30)/3,447);
   }
+
+  //tegne nedbør
+  push();
+  textAlign(CENTER);
+  image(dråbeIkon,idagBoksMel+idagBoksOpdel*2.05,140,idagBoksOpdel/1.1,288);
+  textSize(20);
+  let regnIdag = regnSum[0];
+  text(regnIdag+' mm',idagBoksMel+idagBoksOpdel*2.5,332);
+  pop();
+
+  // tegne temperatur time for time
+
+  push();
+  textSize(10);
+  textAlign(CENTER,TOP);
+  for (let i=0; i<5; i++) {
+    let tid = hour()+i;
+    let billede;
+    //billede skyet sol regn
+    if (skydække[hour()+i]<60 && timeRegn[hour()+i]>1) {
+      billede = skySolRegn;
+    }
+    // sky
+    if (skydække[hour()+i]>60 && timeRegn[hour()+i]<1){
+      billede = sky;
+    }
+    //skyet sol
+    if (skydække[hour()+i]>20 && skydække[hour()+i]<60 && timeRegn[hour()+i]<1){
+      billede = skySol;
+    }
+    // Sky regn
+    if (skydække[hour()+i]>60 && timeRegn[hour()+i]>1){
+      billede = skyRegn;
+    }
+    //solrig
+    if(skydække[hour()+i]<20 && timeRegn[hour()+i]<1){
+      billede = solrig;
+    }
+    text(''+tid,boksMellemrumHor+(boksTyk-2*(width/70+width/100))/4*i+width/70+width/100,idagBoksHøj+boksMellemrumVer+70);
+    text(timeTemp[hour()+i]+' ℃',boksMellemrumHor+(boksTyk-2*(width/70+width/100))/4*i+width/70+width/100,idagBoksHøj+boksMellemrumVer+170);
+    image(billede,boksMellemrumHor+(boksTyk-2*(width/70+width/100))/4*i+width/70-(boksTyk-2*(width/70+width/100))/10+width/100,idagBoksHøj+boksMellemrumVer+100,(boksTyk-2*width/70)/5,50);
+  }
+  pop();
 
   // Uv mand
   push();
