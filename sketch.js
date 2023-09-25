@@ -198,6 +198,8 @@ function tegn() {
   textSize(12);
   textAlign(CENTER);
   text('UV time for time',boksTyk*1.5+boksMellemrumHor*2,idagBoksHøj+boksMellemrumVer+(boksLang-10)/2+12 );
+  let UVx = boksMellemrumHor*2+boksTyk+30+(boksTyk-50);
+  let UVy = idagBoksHøj+boksMellemrumVer+(boksLang-10)-50;
   for (let i = 0; i < 24; i++) {
     strokeWeight(4);
     let UV = Number(uvTime[i]);
@@ -205,6 +207,10 @@ function tegn() {
       continue;
     }
     point(boksMellemrumHor*2+boksTyk+30+(boksTyk-50)/24*i,idagBoksHøj+boksMellemrumVer+(boksLang-10)-50-UV*20);
+    strokeWeight(0.5);
+    line(UVx, UVy, boksMellemrumHor*2+boksTyk+30+(boksTyk-50)/24*i, idagBoksHøj+boksMellemrumVer+(boksLang-10)-50-UV*20)
+    UVx = boksMellemrumHor*2+boksTyk+30+(boksTyk-50)/24*i;
+    UVy = idagBoksHøj+boksMellemrumVer+(boksLang-10)-50-UV*20;
   }
   for (let i=0; i<24;i++){
     if (i%3==0) {
