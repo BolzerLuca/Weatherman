@@ -5,7 +5,8 @@ let timer = ['00','01','02','03','04','05','06','07','08','09','10','11','12','1
 function preload() {
   logo = loadImage('Skoldede skaller.png');
   termoIkon = loadImage('termometer ikon.png');
-  varmepile = loadImage('varmepile.png')
+  varmepile = loadImage('varmepile.png');
+  windsock = loadImage('windsock.png');
 }
 function setup() {
   //laver canvas og top bar
@@ -32,7 +33,6 @@ function setup() {
   søgKnap.mousePressed(søg);
 
   getlocation();
-  tegn();
 }
 
 function updateBy() {
@@ -285,5 +285,28 @@ function tegn() {
   rotate(PI*0.82);
   image(varmepile, 60, -40, 75, 75);
   pop();
+  pop();
+
+  // vindretning
+  push();
+  translate(boksTyk*2.5 + boksMellemrumHor*3, idagBoksHøj + boksMellemrumVer*2 + boksKort*1.5 + 20);
+  // kompass
+  textAlign(CENTER);
+  strokeWeight(3);
+  textSize(20);
+  text("N", 0, -110);
+  text("Ø", 110, 5);
+  text("S", 0, 110);
+  text("V", -110, 5);
+  // vindhastighed m/s
+  strokeWeight(5);
+  textSize(25);
+  text(vind[hour()] + " m/s", -boksTyk/4, -100);
+  // vindsok
+  imageMode(CENTER);
+  angleMode(DEGREES);
+  rotate(vindRetning[hour()] + 90);
+  image(windsock, 45, 0, 90, 45);
+  ellipse(0, 0, 10);
   pop();
 }
