@@ -5,6 +5,7 @@ let timer = ['00','01','02','03','04','05','06','07','08','09','10','11','12','1
 function preload() {
   logo = loadImage('Skoldede skaller.png');
   termoIkon = loadImage('termometer ikon.png');
+  varmepile = loadImage('varmepile.png')
 }
 function setup() {
   //laver canvas og top bar
@@ -166,8 +167,6 @@ function tegn() {
   //tryk
   rect(boksMellemrumHor*2+boksTyk,idagBoksHøj+boksMellemrumVer*2+boksLang,boksTyk,boksKort,10);
   
-  
-  
   //blå navneboks til kasserne
   fill(79, 147, 226);
   //temperatur
@@ -234,4 +233,57 @@ function tegn() {
     fill(0);
     line(width/30+((width-2*width/30)/3)+i*((width-2*width/30)/3),130,width/30+((width-2*width/30)/3)+i*(width-2*width/30)/3,447);
   }
+
+  // Uv mand
+  push();
+  strokeWeight(2);
+  stroke(0);
+  // Sætter (0, 0) i midten af "i dag" boksen
+  translate(width/2-50,idagBoksHøj/2+20);
+  ellipseMode(CENTER);
+  // Ændrer farven på manden afhængig af UV-indekset
+  let a = map(uvTime[hour()], 0, 10, 0, 255);
+  fill(255, 0, 0, a);
+  ellipse(0, 50, 100);
+  fill(255);
+  beginShape();
+  vertex(-75, 40);
+  vertex(75, 40);
+  vertex(50, 0);
+  vertex(-50, 0);
+  vertex(-75, 40);
+  endShape();
+  rectMode(CENTER);
+  rect(0, -15, 100, 30);
+  // sveddråbe
+  push();
+  translate(-50, -25);
+  noStroke();
+  let r = map(tempNu, 5, 30, 0, 255);
+  fill(r, 100-r, 255-r);
+  ellipse(0, 0, 14);
+  beginShape();
+  vertex(7.5, 0);
+  vertex(-7.5, 0);
+  vertex(0, -25);
+  vertex(7.5, 0);
+  endShape();
+  pop();
+  // sol
+  push();
+  translate(175, -75);
+  noStroke();
+  fill(255, 255, 0);
+  ellipse(0, 0, 100);
+  textAlign(CENTER);
+  strokeWeight(1);
+  stroke(0);
+  fill(0);
+  text('UV', 0, 0);
+  text(uvTime[hour()], 0, 10);
+  // pile
+  rotate(PI*0.82);
+  image(varmepile, 60, -40, 75, 75);
+  pop();
+  pop();
 }
