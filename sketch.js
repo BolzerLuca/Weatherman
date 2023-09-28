@@ -343,7 +343,7 @@ function tegn() {
   // skriver nedbør for dagene
   textAlign(RIGHT);
   for (let i = 0; i < 7; i++) {
-    text(regnSum[i] + " mm", boksTyk - 10, 25 + i*(boksKort-40)/7)
+    text(regnSum[i] + " mm", boksTyk - 40, 25 + i*(boksKort-40)/7)
   }
   pop();
 
