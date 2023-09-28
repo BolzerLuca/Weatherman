@@ -347,6 +347,60 @@ function tegn() {
   pop();
   pop();
 
+  // nedbør over dage
+  push();
+  translate(boksTyk*2 + boksMellemrumHor*3, idagBoksHøj + boksMellemrumVer + 40);
+  let day = new Date().getDay();
+  textSize(25);
+  for (let i = 0; i < 7; i++){
+    // skriver "i dag" og "i morgen"
+    switch(i) {
+      case 0:
+        text("I dag", 5, 25);
+        break;
+      case 1:
+        text("I morgen", 5, 20 + (boksKort-40)/7)
+        break; 
+    }
+    // skrive de resterende 5 ugedage
+    if (i > 1) {
+      switch(day) {
+        case 1:
+          text("Mandag", 5, 20 + i*(boksKort-40)/7);
+          break;
+        case 2:
+          text("Tirsdag", 5, 20 + i*(boksKort-40)/7);
+          break;
+        case 3:
+          text("Onsdag", 5, 20 + i*(boksKort-40)/7);
+          break;
+        case 4:
+          text("Torsdag", 5, 20 + i*(boksKort-40)/7);
+          break;
+        case 5:
+          text("Fredag", 5, 20 + i*(boksKort-40)/7);
+          break;
+        case 6:
+          text("Lørdag", 5, 20 + i*(boksKort-40)/7);
+          break;
+        case 7:
+          text("Søndag", 5, 20 + i*(boksKort-40)/7);
+          break;
+      }
+    }
+    if (day == 7) {
+      day = 1;
+    } else {
+      day++;
+    }
+  }
+  // skriver nedbør for dagene
+  textAlign(RIGHT);
+  for (let i = 0; i < 7; i++) {
+    text(regnSum[i] + " mm", boksTyk - 40, 25 + i*(boksKort-40)/7)
+  }
+  pop();
+
   // vindretning
   push();
   translate(boksTyk*2.5 + boksMellemrumHor*3, idagBoksHøj + boksMellemrumVer*2 + boksKort*1.5 + 20);
