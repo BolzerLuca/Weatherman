@@ -79,7 +79,7 @@ function getlocation() {
           solop = data.daily.sunrise;
           solned = data.daily.sunset;
           uvDag = data.daily.uv_index_max;
-          uvTime = data.hourly.uv_index;;
+          uvTime = data.hourly.uv_index;
           tegn();
           resolve(data);
         })
@@ -359,7 +359,7 @@ function tegn() {
         text("I dag", 5, 25);
         break;
       case 1:
-        text("I morgen", 5, 20 + (boksKort-40)/7)
+        text("I morgen", 5, 20 + (boksKort-40)/7);
         break; 
     }
     // skrive de resterende 5 ugedage
@@ -397,7 +397,8 @@ function tegn() {
   // skriver nedbør for dagene
   textAlign(RIGHT);
   for (let i = 0; i < 7; i++) {
-    text(regnSum[i] + " mm", boksTyk - 40, 25 + i*(boksKort-40)/7)
+    text(regnSum[i] + " mm", boksTyk - 40, 25 + i*(boksKort-40)/7);
+    image(dråbeIkon, boksTyk - 30, 25 + i*(boksKort-40)/7, 20, 20);
   }
   pop();
 
