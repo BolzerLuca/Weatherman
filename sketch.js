@@ -1,6 +1,6 @@
 let api_url, lat, lon, søgLat, søgLon, by, land, inpBy, inpLand = "";
 let søgKnap, tempNu, følesNu,logo,termoIkon,dråbeIkon,solrig,sky,skySol,skySolRegn,skyRegn;
-let tempMax,timeTemp, timeRegn, regnSum, byger, tryk, skydække, sigtbarhed, vind, vindRetning, vindStød, solop, solned, uvDag, uvTime = [];
+let tempMax,vejrKode,vejrKodeTime,timeTemp, timeRegn, regnSum, byger, tryk, skydække, sigtbarhed, vind, vindRetning, vindStød, solop, solned, uvDag, uvTime = [];
 let timer = ['00','01','02','03','04','05','06','07','08','09','10','11','12','13','14','15','16','17','18','19','20','21','22','23'];
 function preload() {
   logo = loadImage('Skoldede skaller.png');
@@ -57,12 +57,11 @@ function getlocation() {
       lon = position.coords.longitude;
       // søge vejr data
       api_url =
-      "https://api.open-meteo.com/v1/forecast?latitude="+lat+"&longitude="+lon+"&hourly=temperature_2m,relativehumidity_2m,apparent_temperature,rain,showers,pressure_msl,cloudcover,visibility,windspeed_10m,winddirection_10m,windgusts_10m,uv_index&daily=temperature_2m_max,temperature_2m_min,sunrise,sunset,uv_index_max,uv_index_clear_sky_max,rain_sum,windspeed_10m_max,windgusts_10m_max&windspeed_unit=ms&timezone=auto";
+      "https://api.open-meteo.com/v1/forecast?latitude="+lat+"&longitude="+lon+"&hourly=temperature_2m,relativehumidity_2m,weathercode,apparent_temperature,rain,showers,pressure_msl,cloudcover,visibility,windspeed_10m,winddirection_10m,windgusts_10m,uv_index&daily=temperature_2m_max,temperature_2m_min,sunrise,sunset,uv_index_max,uv_index_clear_sky_max,rain_sum,windspeed_10m_max,weathercode,windgusts_10m_max&windspeed_unit=ms&timezone=auto";
       fetch(api_url)
         .then((response) => response.json())
         //opdatere data
         .then((data) => {
-          console.log(data);
           tempNu = data.hourly.temperature_2m[hour()];
           følesNu = data.hourly.apparent_temperature[hour()];
           tempMax = data.daily.temperature_2m_max;
@@ -79,7 +78,9 @@ function getlocation() {
           solop = data.daily.sunrise;
           solned = data.daily.sunset;
           uvDag = data.daily.uv_index_max;
-          uvTime = data.hourly.uv_index;
+          uvTime = data.hourly.uv_index;;
+          vejrKode = data.daily.weathercode;
+          vejrKodeTime = data.hourly.weathercode;
           tegn();
           resolve(data);
         })
@@ -118,7 +119,7 @@ function søg() {
 function søgVejr() {
   //finder ny data med opgivne by
   api_url =
-  "https://api.open-meteo.com/v1/forecast?latitude="+søgLat+"&longitude="+søgLon+"&hourly=temperature_2m,relativehumidity_2m,apparent_temperature,rain,showers,pressure_msl,cloudcover,visibility,windspeed_10m,winddirection_10m,windgusts_10m,uv_index&daily=temperature_2m_max,temperature_2m_min,sunrise,sunset,uv_index_max,uv_index_clear_sky_max,rain_sum,windspeed_10m_max,windgusts_10m_max&windspeed_unit=ms&timezone=auto";
+  "https://api.open-meteo.com/v1/forecast?latitude="+søgLat+"&longitude="+søgLon+"&hourly=temperature_2m,weathercode,relativehumidity_2m,apparent_temperature,rain,showers,pressure_msl,cloudcover,visibility,windspeed_10m,winddirection_10m,windgusts_10m,uv_index&daily=temperature_2m_max,weathercode,temperature_2m_min,sunrise,sunset,uv_index_max,uv_index_clear_sky_max,rain_sum,windspeed_10m_max,windgusts_10m_max&windspeed_unit=ms&timezone=auto";
   fetch(api_url)
     .then((response) => response.json())
     //Opdatere data
@@ -139,6 +140,8 @@ function søgVejr() {
       solned = data.daily.sunset;
       uvDag = data.daily.uv_index_max;
       uvTime = data.hourly.uv_index;
+      vejrKode = data.daily.weathercode;
+      vejrKodeTime = data.hourly.weathercode;
       tegn();
     });
 }
@@ -263,34 +266,23 @@ function tegn() {
   // tegne temperatur time for time
 
   push();
-  textSize(10);
+  textSize(15);
   textAlign(CENTER,TOP);
   for (let i=0; i<5; i++) {
-    let tid = hour()+i;
-    let billede;
-    //billede skyet sol regn
-    if (skydække[hour()+i]<60 && timeRegn[hour()+i]>1) {
-      billede = skySolRegn;
-    }
-    // sky
-    if (skydække[hour()+i]>60 && timeRegn[hour()+i]<1){
-      billede = sky;
-    }
-    //skyet sol
-    if (skydække[hour()+i]>20 && skydække[hour()+i]<60 && timeRegn[hour()+i]<1){
-      billede = skySol;
-    }
-    // Sky regn
-    if (skydække[hour()+i]>60 && timeRegn[hour()+i]>1){
-      billede = skyRegn;
-    }
-    //solrig
-    if(skydække[hour()+i]<20 && timeRegn[hour()+i]<1){
-      billede = solrig;
-    }
+   let tid = hour()+i;
+    let vejrIkonTime = sky;
+  if (vejrKodeTime[hour()+i] == 1 || vejrKodeTime[hour()+i] == 2 || vejrKodeTime[hour()+i] == 3){
+    vejrIkonTime = skySol;
+  }
+  if (vejrKodeTime[hour()+i] ==0){
+    vejrIkonTime = solrig;
+  }
+  if (vejrKodeTime[hour()+i] == 51 || vejrKodeTime[hour()+i] == 53 || vejrKodeTime[hour()+i] == 55||vejrKodeTime[hour()+i] == 56||vejrKodeTime[hour()+i] == 57 ||vejrKodeTime[hour()+i] == 61 ||vejrKodeTime[hour()+i] == 63 ||vejrKodeTime[hour()+i] == 65 ||vejrKodeTime[hour()+i] == 80 ||vejrKodeTime[hour()+i] == 81 ||vejrKodeTime[hour()+i]==82){
+    vejrIkonTime = skyRegn;
+  }
     text(''+tid,boksMellemrumHor+(boksTyk-2*(width/70+width/100))/4*i+width/70+width/100,idagBoksHøj+boksMellemrumVer+70);
     text(timeTemp[hour()+i]+' ℃',boksMellemrumHor+(boksTyk-2*(width/70+width/100))/4*i+width/70+width/100,idagBoksHøj+boksMellemrumVer+170);
-    image(billede,boksMellemrumHor+(boksTyk-2*(width/70+width/100))/4*i+width/70-(boksTyk-2*(width/70+width/100))/10+width/100,idagBoksHøj+boksMellemrumVer+100,(boksTyk-2*width/70)/5,50);
+    image(vejrIkonTime,boksMellemrumHor+(boksTyk-2*(width/70+width/100))/4*i+width/70-(boksTyk-2*(width/70+width/100))/10+width/100,idagBoksHøj+boksMellemrumVer+100,(boksTyk-2*width/70)/5,50);
   }
   pop();
 
@@ -424,4 +416,57 @@ function tegn() {
   image(windsock, 45, 0, 90, 45);
   ellipse(0, 0, 10);
   pop();
+print(vejrKode[7]);
+  //temperatur over dage'
+  let ugeDag;
+  let fåDag = new Date().getDay();
+  for (let i = 0; i<5;i++){
+  switch (fåDag) {
+    case 1:
+      ugeDag = "Mandag";
+      break;
+    case 2:
+      ugeDag = "Tirsdag";
+      break;
+    case 3:
+       ugeDag = "Onsdag";
+      break;
+    case 4:
+      ugeDag = "Torsdag";
+      break;
+    case 5:
+      ugeDag = "Fredag";
+      break;
+    case 6:
+      ugeDag = "Lørdag";
+      break;
+    case 7:
+      ugeDag = "Søndag";
+  }
+  if (fåDag == 7){
+    fåDag = 1;
+  }
+  else {
+    fåDag++;
+  }
+  let vejrIkonDag = sky;
+  if (vejrKode[i] == 1 || vejrKode[i] == 2 || vejrKode[i] == 3){
+    vejrIkonDag = skySol;
+  }
+  if (vejrKode[i] ==0){
+    vejrIkonDag = solrig;
+  }
+  if (vejrKode[i] == 51 || vejrKode[i] == 53 || vejrKode[i] == 55||vejrKode[i] == 56||vejrKode[i] == 57 ||vejrKode[i] == 61 ||vejrKode[i] == 63 ||vejrKode[i] == 65 ||vejrKode[i] == 80 ||vejrKode[i] == 81 ||vejrKode[i]==82){
+    vejrIkonDag = skyRegn;
+  }
+  
+  push();
+  translate(boksMellemrumHor,idagBoksHøj+boksMellemrumVer+40);
+  textSize(15);
+  textAlign(CENTER);
+  text(ugeDag,width/100+(boksTyk-2*width/100)/10+(boksTyk-2*width/100)/5*i,200);
+  text(tempMax[i]+'℃',width/100+(boksTyk-2*width/100)/10+(boksTyk-2*width/100)/5*i,300);
+  image(vejrIkonDag,width/100+(boksTyk-2*width/100)/5*i,225,(boksTyk-2*width/100)/5,50);
+  pop();
+  }
 }
