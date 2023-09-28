@@ -390,7 +390,7 @@ function tegn() {
   textAlign(RIGHT);
   for (let i = 0; i < 7; i++) {
     text(regnSum[i] + " mm", boksTyk - 40, 25 + i*(boksKort-40)/7);
-    image(dråbeIkon, boksTyk - 30, 25 + i*(boksKort-40)/7, 20, 20);
+    image(dråbeIkon, boksTyk - 30, 10 + i*(boksKort-40)/7, 20, 20);
   }
   pop();
 
