@@ -530,7 +530,7 @@ function tegn() {
     image(sortPil, boksTyk - 25, 7 + j*(boksKort-40)/7, 20, 20);
   }
   pop();
-}
+
 
   //UV over dage
    let ugeDag1;
@@ -573,5 +573,5 @@ function tegn() {
    image(solIkon,width/300+((boksTyk-2*(width/100))/5+width/300)*i,50,(boksTyk-2*(width/100))/5,70);
    text(uvDag[i],width/300+(boksTyk-2*(width/100))/10+((boksTyk-2*(width/100))/5+width/300)*i,90);
    pop();
-}
+  }
 }
