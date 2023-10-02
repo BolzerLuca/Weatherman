@@ -13,6 +13,7 @@ function preload() {
   skyRegn = loadImage('Skyregn.png');
   varmepile = loadImage('varmepile.png');
   windsock = loadImage('windsock.png');
+  sortPil = loadImage('pilOp.png');
 }
 function setup() {
   //laver canvas og top bar
@@ -416,7 +417,7 @@ function tegn() {
   image(windsock, 45, 0, 90, 45);
   ellipse(0, 0, 10);
   pop();
-print(vejrKode[7]);
+    
   //temperatur over dage'
   let ugeDag;
   let fåDag = new Date().getDay();
@@ -469,4 +470,63 @@ print(vejrKode[7]);
   image(vejrIkonDag,width/100+(boksTyk-2*width/100)/5*i,225,(boksTyk-2*width/100)/5,50);
   pop();
   }
+  
+  // tryk
+  push();
+  translate(boksMellemrumHor*2 + boksTyk, idagBoksHøj + boksLang + boksMellemrumVer*2 + 40);
+  day = new Date().getDay();
+  textSize(25);
+  for (let i = 0; i < 7; i++){
+    // skriver "i dag" og "i morgen"
+    switch(i) {
+      case 0:
+        text("I dag", 5, 25);
+        break;
+      case 1:
+        text("I morgen", 5, 20 + (boksKort-40)/7);
+        break; 
+    }
+    // skrive de resterende 5 ugedage
+    if (i > 1) {
+      switch(day) {
+        case 1:
+          text("Mandag", 5, 20 + i*(boksKort-40)/7);
+          break;
+        case 2:
+          text("Tirsdag", 5, 20 + i*(boksKort-40)/7);
+          break;
+        case 3:
+          text("Onsdag", 5, 20 + i*(boksKort-40)/7);
+          break;
+        case 4:
+          text("Torsdag", 5, 20 + i*(boksKort-40)/7);
+          break;
+        case 5:
+          text("Fredag", 5, 20 + i*(boksKort-40)/7);
+          break;
+        case 6:
+          text("Lørdag", 5, 20 + i*(boksKort-40)/7);
+          break;
+        case 7:
+          text("Søndag", 5, 20 + i*(boksKort-40)/7);
+          break;
+      }
+    }
+    if (day == 7) {
+      day = 1;
+    } else {
+      day++;
+    }
+  }
+  // skriver trykket i højre side
+  textAlign(RIGHT);
+  for (let j = 0; j < 7; j++) {
+    let trykSum = 0;
+    for (let i = 0; i < 24; i++) {
+      trykSum += tryk[j*24 + i];
+    }
+    text(round(trykSum/24) + " hPa", boksTyk -30, 25 + j*(boksKort-40)/7);
+    image(sortPil, boksTyk - 25, 7 + j*(boksKort-40)/7, 20, 20);
+  }
+  pop();
 }
