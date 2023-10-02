@@ -1,5 +1,5 @@
 let api_url, lat, lon, søgLat, søgLon, by, land, inpBy, inpLand = "";
-let søgKnap, tempNu, følesNu,logo,termoIkon,dråbeIkon,solrig,sky,skySol,skySolRegn,skyRegn;
+let søgKnap, tempNu, følesNu,logo,termoIkon,dråbeIkon,solrig,sky,skySol,skySolRegn,skyRegn,solIkon;
 let tempMax,vejrKode,vejrKodeTime,timeTemp, timeRegn, regnSum, byger, tryk, skydække, sigtbarhed, vind, vindRetning, vindStød, solop, solned, uvDag, uvTime = [];
 let timer = ['00','01','02','03','04','05','06','07','08','09','10','11','12','13','14','15','16','17','18','19','20','21','22','23'];
 function preload() {
@@ -14,6 +14,7 @@ function preload() {
   varmepile = loadImage('varmepile.png');
   windsock = loadImage('windsock.png');
   sortPil = loadImage('pilOp.png');
+  solIkon = loadImage('SOL.png');
 }
 function setup() {
   //laver canvas og top bar
@@ -529,4 +530,48 @@ function tegn() {
     image(sortPil, boksTyk - 25, 7 + j*(boksKort-40)/7, 20, 20);
   }
   pop();
+}
+
+  //UV over dage
+   let ugeDag1;
+   let fåDag1 = new Date().getDay();
+
+   for (let i = 0; i<5;i++){
+   switch (fåDag1) {
+     case 1:
+       ugeDag1 = "Mandag";
+       break;
+     case 2:
+       ugeDag1 = "Tirsdag";
+       break;
+     case 3:
+        ugeDag1 = "Onsdag";
+       break;
+     case 4:
+       ugeDag1 = "Torsdag";
+       break;
+     case 5:
+       ugeDag1 = "Fredag";
+       break;
+     case 6:
+       ugeDag1 = "Lørdag";
+       break;
+     case 7:
+       ugeDag1 = "Søndag";
+   }
+   if (fåDag1 == 7){
+     fåDag1 = 1;
+   }
+   else {
+     fåDag1++;
+   }
+   push();
+   textSize(15);
+   textAlign(CENTER);
+   translate(boksMellemrumHor*2+boksTyk,idagBoksHøj+boksMellemrumVer+40);
+   text(ugeDag1,width/300+(boksTyk-2*(width/100))/10+((boksTyk-2*(width/100))/5+width/300)*i,30);
+   image(solIkon,width/300+((boksTyk-2*(width/100))/5+width/300)*i,50,(boksTyk-2*(width/100))/5,70);
+   text(uvDag[i],width/300+(boksTyk-2*(width/100))/10+((boksTyk-2*(width/100))/5+width/300)*i,90);
+   pop();
+}
 }
