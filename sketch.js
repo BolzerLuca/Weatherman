@@ -335,7 +335,7 @@ function tegn() {
   fill(0);
   text('UV', 0, 0);
   text(uvTime[hour()], 0, 10);
-  // pile
+  // varmepile
   rotate(PI*0.82);
   image(varmepile, 60, -40, 75, 75);
   pop();
