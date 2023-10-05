@@ -126,6 +126,7 @@ function søgVejr() {
     .then((response) => response.json())
     //Opdatere data
     .then((data) => {
+      timeTemp = data.hourly.temperature_2m;
       tempNu = data.hourly.temperature_2m[hour()];
       følesNu = data.hourly.apparent_temperature[hour()];
       tempMax = data.daily.temperature_2m_max;
