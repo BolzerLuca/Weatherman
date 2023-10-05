@@ -265,29 +265,6 @@ function tegn() {
   text(regnIdag+' mm',idagBoksMel+idagBoksOpdel*2.5,332);
   pop();
 
-  // tegne temperatur time for time
-
-  push();
-  textSize(15);
-  textAlign(CENTER,TOP);
-  for (let i=0; i<5; i++) {
-   let tid = hour()+i;
-    let vejrIkonTime = sky;
-  if (vejrKodeTime[hour()+i] == 1 || vejrKodeTime[hour()+i] == 2 || vejrKodeTime[hour()+i] == 3){
-    vejrIkonTime = skySol;
-  }
-  if (vejrKodeTime[hour()+i] ==0){
-    vejrIkonTime = solrig;
-  }
-  if (vejrKodeTime[hour()+i] == 51 || vejrKodeTime[hour()+i] == 53 || vejrKodeTime[hour()+i] == 55||vejrKodeTime[hour()+i] == 56||vejrKodeTime[hour()+i] == 57 ||vejrKodeTime[hour()+i] == 61 ||vejrKodeTime[hour()+i] == 63 ||vejrKodeTime[hour()+i] == 65 ||vejrKodeTime[hour()+i] == 80 ||vejrKodeTime[hour()+i] == 81 ||vejrKodeTime[hour()+i]==82){
-    vejrIkonTime = skyRegn;
-  }
-    text(''+tid,boksMellemrumHor+(boksTyk-2*(width/70+width/100))/4*i+width/70+width/100,idagBoksHøj+boksMellemrumVer+70);
-    text(timeTemp[hour()+i]+' ℃',boksMellemrumHor+(boksTyk-2*(width/70+width/100))/4*i+width/70+width/100,idagBoksHøj+boksMellemrumVer+170);
-    image(vejrIkonTime,boksMellemrumHor+(boksTyk-2*(width/70+width/100))/4*i+width/70-(boksTyk-2*(width/70+width/100))/10+width/100,idagBoksHøj+boksMellemrumVer+100,(boksTyk-2*width/70)/5,50);
-  }
-  pop();
-
   // Uv mand
   push();
   strokeWeight(2);
@@ -418,8 +395,30 @@ function tegn() {
   image(windsock, 45, 0, 90, 45);
   ellipse(0, 0, 10);
   pop();
-    
-  //temperatur over dage'
+  
+  // tegne temperatur time for time
+  push();
+  textSize(15);
+  textAlign(CENTER,TOP);
+  for (let i=0; i<5; i++) {
+    let tid = hour()+i;
+    let vejrIkonTime = sky;
+    if (vejrKodeTime[hour()+i] == 1 || vejrKodeTime[hour()+i] == 2 || vejrKodeTime[hour()+i] == 3){
+      vejrIkonTime = skySol;
+    }
+    if (vejrKodeTime[hour()+i] ==0){
+      vejrIkonTime = solrig;
+    }
+    if (vejrKodeTime[hour()+i] == 51 || vejrKodeTime[hour()+i] == 53 || vejrKodeTime[hour()+i] == 55||vejrKodeTime[hour()+i] == 56||vejrKodeTime[hour()+i] == 57 ||vejrKodeTime[hour()+i] == 61 ||vejrKodeTime[hour()+i] == 63 ||vejrKodeTime[hour()+i] == 65 ||vejrKodeTime[hour()+i] == 80 ||vejrKodeTime[hour()+i] == 81 ||vejrKodeTime[hour()+i]==82){
+      vejrIkonTime = skyRegn;
+    }
+    text(tid + ':00',boksMellemrumHor+(boksTyk-2*(width/70+width/100))/4*i+width/70+width/100,idagBoksHøj+boksMellemrumVer+70);
+    text(timeTemp[hour()+i]+' ℃',boksMellemrumHor+(boksTyk-2*(width/70+width/100))/4*i+width/70+width/100,idagBoksHøj+boksMellemrumVer+170);
+    image(vejrIkonTime,boksMellemrumHor+(boksTyk-2*(width/70+width/100))/4*i+width/70-(boksTyk-2*(width/70+width/100))/10+width/100,idagBoksHøj+boksMellemrumVer+100,(boksTyk-2*width/70)/5,50);
+  }
+  pop();
+
+  //temperatur over dage
   let ugeDag;
   let fåDag = new Date().getDay();
   for (let i = 0; i<5;i++){
@@ -510,7 +509,6 @@ function tegn() {
           break;
         case 7:
           text("Søndag", 5, 20 + i*(boksKort-40)/7);
-          break;
       }
     }
     if (day == 7) {
