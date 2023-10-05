@@ -209,42 +209,55 @@ function tegn() {
   
   // tegne uv graf
   fill(255);
+  // Lave en boks omkring grafen
   rect(boksMellemrumHor*2+boksTyk+10,idagBoksHøj+boksMellemrumVer+(boksLang-10)/2,boksTyk-20,(boksLang-10)/2);
+  //laver en overskrift til grafen
   fill(0);
   textSize(12);
   textAlign(CENTER);
   text('UV time for time',boksTyk*1.5+boksMellemrumHor*2,idagBoksHøj+boksMellemrumVer+(boksLang-10)/2+12 );
+  // lave y og x koordinater til hvor grafen skal starte
   let UVx = boksMellemrumHor*2+boksTyk+30+(boksTyk-50);
   let UVy = idagBoksHøj+boksMellemrumVer+(boksLang-10)-50;
+
   for (let i = 0; i < 24; i++) {
     strokeWeight(4);
     let UV = Number(uvTime[i]);
+    // hvis uv er over 7 springer vi over
     if (UV > 7){
       continue;
     }
+    // laver en prik hvor efter uv værdien
     point(boksMellemrumHor*2+boksTyk+30+(boksTyk-50)/24*i,idagBoksHøj+boksMellemrumVer+(boksLang-10)-50-UV*20);
     strokeWeight(0.5);
+    //laver linjer mellem punkter
     line(UVx, UVy, boksMellemrumHor*2+boksTyk+30+(boksTyk-50)/24*i, idagBoksHøj+boksMellemrumVer+(boksLang-10)-50-UV*20)
+    //Opdatere x og y koordinater
     UVx = boksMellemrumHor*2+boksTyk+30+(boksTyk-50)/24*i;
     UVy = idagBoksHøj+boksMellemrumVer+(boksLang-10)-50-UV*20;
   }
+
   for (let i=0; i<24;i++){
+    //hver tredje gang skal der skrives tidspunkt
     if (i%3==0) {
       textSize(10);
       text(timer[i],boksMellemrumHor*2+boksTyk+30+(boksTyk-50)/24*i,idagBoksHøj+boksMellemrumVer+(boksLang-10)-30);
     }
   }
+
   for (let i = 0; i<7; i++){
     strokeWeight(1);
+    //laver linjer til aflæse uv
     let linex = boksMellemrumHor*2+boksTyk+30;
     let liney = idagBoksHøj+boksMellemrumVer+(boksLang-10)-50-i*20;
     line(linex,liney,linex+boksTyk-40,idagBoksHøj+boksMellemrumVer+(boksLang-10)-50-i*20);
+    //akse enheder
     textAlign(CENTER);
     text(i+'',linex-10,liney);
   }
 
   // Nu temperatur
-  image(termoIkon,width/110,140,(width-2*width/30)/4,250);
+  image(termoIkon,width/20,140,width/7.4,300);
   textSize(20);
   textAlign(LEFT);
   text(''+tempNu+'℃',width/110+(width-2*width/6)/4,240);
@@ -309,9 +322,10 @@ function tegn() {
   endShape();
   rectMode(CENTER);
   rect(0, -15, 100, 30);
+  pop();
   // sveddråbe
   push();
-  translate(-50, -25);
+  translate(width/2-50-50, idagBoksHøj/2+20-25);
   noStroke();
   let r = map(tempNu, 5, 30, 0, 255);
   fill(r, 100-r, 255-r);
@@ -325,7 +339,7 @@ function tegn() {
   pop();
   // sol
   push();
-  translate(175, -75);
+  translate(width/2-50+175,idagBoksHøj/2+20 -75);
   noStroke();
   fill(255, 255, 0);
   ellipse(0, 0, 100);
@@ -339,7 +353,7 @@ function tegn() {
   rotate(PI*0.82);
   image(varmepile, 60, -40, 75, 75);
   pop();
-  pop();
+  
 
   // nedbør over dage
   push();
