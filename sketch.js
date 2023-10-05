@@ -3,18 +3,18 @@ let søgKnap, tempNu, følesNu,logo,termoIkon,dråbeIkon,solrig,sky,skySol,skySo
 let tempMax,vejrKode,vejrKodeTime,timeTemp, timeRegn, regnSum, byger, tryk, skydække, sigtbarhed, vind, vindRetning, vindStød, solop, solned, uvDag, uvTime = [];
 let timer = ['00','01','02','03','04','05','06','07','08','09','10','11','12','13','14','15','16','17','18','19','20','21','22','23'];
 function preload() {
-  logo = loadImage('Skoldede skaller.png');
-  termoIkon = loadImage('termometer ikon.png');
-  dråbeIkon = loadImage('DråbeIkon.png');
-  solrig = loadImage('Solrig.png');
-  sky = loadImage('Sky.png');
-  skySol = loadImage('SkyetSol.png');
-  skySolRegn = loadImage('SkyetSolRegn.png');
-  skyRegn = loadImage('Skyregn.png');
-  varmepile = loadImage('varmepile.png');
-  windsock = loadImage('windsock.png');
-  sortPil = loadImage('pilOp.png');
-  solIkon = loadImage('SOL.png');
+  logo = loadImage('assets/Skoldede skaller.png');
+  termoIkon = loadImage('assets/termometer ikon.png');
+  dråbeIkon = loadImage('assets/DråbeIkon.png');
+  solrig = loadImage('assets/Solrig.png');
+  sky = loadImage('assets/Sky.png');
+  skySol = loadImage('assets/SkyetSol.png');
+  skySolRegn = loadImage('assets/SkyetSolRegn.png');
+  skyRegn = loadImage('assets/Skyregn.png');
+  varmepile = loadImage('assets/varmepile.png');
+  windsock = loadImage('assets/windsock.png');
+  sortPil = loadImage('assets/pilOp.png');
+  solIkon = loadImage('assets/SOL.png');
 }
 function setup() {
   //laver canvas og top bar
